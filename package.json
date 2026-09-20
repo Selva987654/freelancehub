@@ -1,0 +1,21 @@
+{
+  "name": "freelancerhub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FreelancerHub — tell us what you need, find someone who can make it happen.",
+  "scripts": {
+    "setup": "npm --prefix backend install && npm --prefix frontend install",
+    "dev": "concurrently -n api,web -c blue,magenta \"npm --prefix backend start\" \"npm --prefix frontend run dev\"",
+    "dev:backend": "npm --prefix backend start",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "seed": "npm --prefix backend run seed",
+    "test:api": "node backend/smoke_test.js",
+    "test:ui": "node tests/ui_test.js",
+    "test:lifecycle": "node tests/lifecycle_test.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
