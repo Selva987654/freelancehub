@@ -56,6 +56,28 @@ npm run dev:backend
 npm run dev:frontend
 ```
 
+## Deploy as one service
+
+The Express server serves both the API and the built React app, so deploy the
+repository as a single Node.js web service rather than deploying the frontend
+and backend separately.
+
+Use these commands in your hosting provider's build and start settings:
+
+```bash
+# Build command
+npm run setup && npm run build
+
+# Start command
+npm start
+```
+
+The service listens on the provider's `PORT` and serves the app and API from
+the same URL. Set `JWT_SECRET` to a unique production secret. If the provider's
+filesystem is temporary, attach persistent storage and set `DB_PATH` and
+`UPLOAD_DIR` to locations on that storage so the SQLite database and uploaded
+files survive restarts and redeploys.
+
 ## Demo accounts
 
 All seeded accounts use the password **`demo1234`**.

@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -23,6 +24,8 @@ const adminRoutes = require('./routes/admin.routes');
 const uploadsRoutes = require('./routes/uploads.routes');
 
 const app = express();
+const frontendDist = path.resolve(__dirname, '../../frontend/dist');
+const frontendIndex = path.join(frontendDist, 'index.html');
 
 app.use(cors({ origin: env.corsOrigin === '*' ? true : env.corsOrigin.split(','), credentials: true }));
 app.use(express.json({ limit: '2mb' }));
@@ -47,6 +50,17 @@ app.use('/api/notifications', notificationsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/uploads', uploadsRoutes);
+
+app.use(['/api', '/uploads'], notFoundHandler);
+
+if (fs.existsSync(frontendIndex)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res, next) => {
+    res.sendFile(frontendIndex, (err) => {
+      if (err) next(err);
+    });
+  });
+}
 
 app.use(notFoundHandler);
 app.use(errorHandler);
